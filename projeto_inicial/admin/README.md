@@ -1,5 +1,9 @@
-abrir a pasta admin no vscode e 
-rodar o json server: 
+Projeto Educacional da instituição de ensino Alura.
+Onde pude aprender e praticar JS na Web: CRUD.
+
+Abrir a pasta admin no vscode e
+rodar o json server:
+
 ```js
 json-server --watch db.json
 ```
