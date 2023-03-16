@@ -34,14 +34,41 @@ const removeCliente = id => {
   })
 }
 
+//Para pegar as informações dos inputs de acordo com id. Para ser possível EDITAR
+
+const infosCliente = id => {
+  return fetch(`http://localhost:3000/profile/${id}`).then(resposta => {
+    return resposta.json()
+  })
+}
+
+//Para EDITAR um cliente na lista. Pegando info especifica com id.
+
+const editaCliente = (id, nome, email) => {
+  return fetch(`http://localhost:3000/profile/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-type': 'Application/json'
+    },
+    body: JSON.stringify({
+      nome: nome,
+      email: email
+    })
+  }).then(resposta => {
+    return resposta.json()
+  })
+}
+
 export const clienteService = {
   listaClientes,
   criaCliente,
-  removeCliente
+  removeCliente,
+  infosCliente,
+  editaCliente
 }
 
-//A dependência Json-Server irá simular uma API local. json-server --watch db.json
+//A dependência Json-Server irá simular uma API local. json-server --watch db.json(na pasta admin(que é onde está o db.json))
 
 //instalei Browser-Sync para simular um servidor para o db.json rodar.
 
-//browser-sync start --server --file . --host --port 5000 --startPath admin/telas/lista_cliente.html
+//browser-sync start --server --file . --host --port 5000 --startPath admin/telas/lista_cliente.html(na pasta projeto_inicial(pasta principal do projeto))

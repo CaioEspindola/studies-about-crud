@@ -4,6 +4,21 @@
       "nome": "felipe",
       "email": "felipe@alura.com",
       "id": 1
+    },
+    {
+      "nome": "LudiAblo",
+      "email": "ludimito@hotmail.com",
+      "id": 2
+    },
+    {
+      "nome": "Caio From Hell",
+      "email": "caioespindola@hotmail.com",
+      "id": 3
+    },
+    {
+      "nome": "Kyabey",
+      "email": "Kyabey@ogrimmar.com.br",
+      "id": 4
     }
   ]
 }
