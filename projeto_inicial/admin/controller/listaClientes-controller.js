@@ -20,27 +20,41 @@ const criaNovaLinha = (nome, email, id) => {
   return linhaNovoCliente
 }
 
-//DELETAR Percorrendo a arvore do DOM e adicionando um evento de click
+//Para DELETAR. Percorre a arvore do DOM e adiciona um evento de click, declarando um função assíncrona e trabalhando com a expressão await.
 const tabela = document.querySelector('[data-tabela]')
 
-tabela.addEventListener('click', evento => {
+tabela.addEventListener('click', async evento => {
   let botaoDeletar =
     evento.target.className === 'botao-simples botao-simples--excluir'
   if (botaoDeletar) {
-    const linhaCliente = evento.target.closest('[data-id]')
-    let id = linhaCliente.dataset.id
-    clienteService.removeCliente(id).then(() => {
+    try {
+      const linhaCliente = evento.target.closest('[data-id]')
+      let id = linhaCliente.dataset.id
+      await clienteService.removeCliente(id)
       linhaCliente.remove()
-    })
+    } catch (erro) {
+      console.log(erro)
+      window.location.href = '../telas/erro.html'
+    }
   }
 })
 
 //Esta importando a função listaCliente(Que é uma requisição Fetch, solicitando e devolvendo infos)
 //Então percorre um loop nos elementos da API e acrescenta as informações na nova linha de acordo como solicitado no template.
-clienteService.listaClientes().then(data => {
-  data.forEach(elemento => {
-    tabela.appendChild(
-      criaNovaLinha(elemento.nome, elemento.email, elemento.id)
-    )
-  })
-})
+
+const render = async () => {
+  try {
+    const listaClientes = await clienteService.listaClientes()
+
+    listaClientes.forEach(elemento => {
+      tabela.appendChild(
+        criaNovaLinha(elemento.nome, elemento.email, elemento.id)
+      )
+    })
+  } catch (erro) {
+    console.log(erro)
+    window.location.href = '../telas/erro.html'
+  }
+}
+
+render()

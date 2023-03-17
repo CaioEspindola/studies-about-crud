@@ -1,29 +1,36 @@
 import { clienteService } from '../service/cliente-service.js'
+;(async () => {
+  //Para instanciar um objeto url, e informar onde estamos na pagina com o id
+  const pegaURL = new URL(window.location)
 
-//para instanciar um objeto url, e passou onde estamos na pagina
-const pegaURL = new URL(window.location)
+  //Para pegar o id como parâmetro.
+  const id = pegaURL.searchParams.get('id')
 
-//Para pegar o id
-const id = pegaURL.searchParams.get('id')
+  //Percorrer o DOM buscando os dados dos inputs
+  const inputNome = document.querySelector('[data-nome]')
+  const inputEmail = document.querySelector('[data-email]')
 
-//Percorrer o DOM buscando os dados dos inputs
-const inputNome = document.querySelector('[data-nome]')
-const inputEmail = document.querySelector('[data-email]')
+  try {
+    const dados = await clienteService.infosCliente(id)
+    inputNome.value = dados.nome
+    inputEmail.value = dados.email
+  } catch (erro) {
+    console.log(erro)
+    window.location.href = '../telas/erro.html'
+  }
 
-clienteService.infosCliente(id).then(dados => {
-  inputNome.value = dados.nome
-  inputEmail.value = dados.email
-})
+  //Percorrer o DOM buscando o formulário e um evento de click par aplicar a função que vai EDITAR
+  const formulario = document.querySelector('[data-form]')
 
-//Percorrer o DOM buscando o formulario
-const formulario = document.querySelector('[data-form]')
+  formulario.addEventListener('submit', async evento => {
+    evento.preventDefault()
 
-formulario.addEventListener('submit', evento => {
-  evento.preventDefault()
-
-  clienteService
-    .editaCliente(id, inputNome.value, inputEmail.value)
-    .then(() => {
+    try {
+      await clienteService.editaCliente(id, inputNome.value, inputEmail.value)
       window.location.href = '../telas/edicao_concluida.html'
-    })
-})
+    } catch (erro) {
+      console.log(erro)
+      window.location.href = '../telas/erro.html'
+    }
+  })
+})()
